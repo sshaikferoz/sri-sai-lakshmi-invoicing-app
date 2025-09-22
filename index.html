@@ -47,7 +47,7 @@
             const [formData, setFormData] = useState({
                 companyName: 'SRI SAI LAKSHMI ENTERPRISES',
                 address: '4-77, Elikatta Village, Farooqnagar Mandal,Ranga Reddy Dist, Telangana, 509216',
-                mobile: '9703125340',
+                mobile: '9573391321',
                 email: 'sslenterprises1988@gmail.com',
                 gstn: '36CJTPP4170J1ZJ',
                 placeOfService: 'Ellikatta (V), Farooqnagar (M), R R Dist,Telangana-509216',
@@ -64,12 +64,7 @@
                 bankBranch: 'HDFC Bank , Branch Name: Shadnagar',
                 ifscCode: 'HDFC0004330',
                 items: [
-                    { description: 'Labour Charges for Quartz Lumps -Nava', sacCode: '998622', qty: '0.000', rate: '0' },
-                    { description: 'Labour Charges for M G Quartz Lumps', sacCode: '998622', qty: '320.090', rate: '340' },
-                    { description: 'Labour Charges for B G Quartz Lumps', sacCode: '998622', qty: '240.850', rate: '285' },
-                    { description: 'Labour Charges for B G Quartz Lumps', sacCode: '998622', qty: '285.430', rate: '285' },
-                    { description: 'Labour Charges for B G Quartz Lumps', sacCode: '998622', qty: '69.870', rate: '285' },
-                    { description: 'Labour Charges for B G Feldspar Lumps', sacCode: '998622', qty: '0.000', rate: '0' },
+                    // { description: 'Labour Charges for Quartz Lumps -Nava', sacCode: '998622', qty: '0.000', rate: '0' },
                 ]
             });
 
@@ -208,7 +203,7 @@
             const addItem = () => {
                 setFormData({
                     ...formData,
-                    items: [...formData.items, { description: '', sacCode: '', qty: '', rate: '' }]
+                    items: [...formData.items, { description: '', sacCode: '998622', qty: '', rate: '' }]
                 });
             };
 
@@ -218,13 +213,14 @@
             };
 
             const generatePDFWithURL = async () => {
-                try {
-                    // Show loading state
-                    const button = document.querySelector('button');
-                    const originalText = button.textContent;
-                    button.textContent = 'Generating PDF...';
-                    button.disabled = true;
+                // Get button reference and show loading state
+                const button = document.querySelector('.w-full.bg-blue-600'); // More specific selector
+                const originalText = button.textContent;
+                button.textContent = 'Generating PDF...';
+                button.disabled = true;
+                button.classList.add('opacity-75', 'cursor-not-allowed');
 
+                try {
                     // Calculate amounts before generating PDF
                     const calculations = calculateAmounts();
                     const updatedFormData = { ...formData, ...calculations };
@@ -265,18 +261,9 @@
                     // Clean up the blob URL
                     window.URL.revokeObjectURL(downloadUrl);
 
-                    // Reset button
-                    button.textContent = originalText;
-                    button.disabled = false;
-
                 } catch (error) {
                     console.error('PDF Generation Error:', error);
                     alert(`Failed to generate PDF: ${error.message}`);
-
-                    // Reset button on error
-                    const button = document.querySelector('button');
-                    button.textContent = 'Generate PDF Invoice';
-                    button.disabled = false;
 
                     // Fallback: open preview in new tab
                     const calculations = calculateAmounts();
@@ -285,6 +272,11 @@
                     const currentUrl = window.location.href.split('?')[0];
                     const newUrl = `${currentUrl}?data=${encodedData}`;
                     window.open(newUrl, '_blank');
+                } finally {
+                    // Reset button state (this runs whether success or error)
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.classList.remove('opacity-75', 'cursor-not-allowed');
                 }
             };
 
@@ -790,7 +782,7 @@
 
             return (
                 <div className="min-h-screen bg-gray-50 py-8">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Tax Invoice Generator</h1>
 
@@ -924,7 +916,7 @@
                                                     placeholder="Description"
                                                     value={item.description}
                                                     onChange={(e) => handleInputChange(e, index, 'description')}
-                                                    className="col-span-4 p-2 border border-gray-300 rounded text-sm focus:ring-yellow-500 focus:border-yellow-500"
+                                                    className="col-span-2 p-2 border border-gray-300 rounded text-sm focus:ring-yellow-500 focus:border-yellow-500"
                                                 />
                                                 <input
                                                     type="text"
@@ -948,7 +940,7 @@
                                                     onChange={(e) => handleInputChange(e, index, 'rate')}
                                                     className="col-span-2 p-2 border border-gray-300 rounded text-sm focus:ring-yellow-500 focus:border-yellow-500"
                                                 />
-                                                <div className="col-span-1 p-2 text-sm font-semibold text-center bg-gray-100 rounded">
+                                                <div className="col-span-3 p-2 text-sm font-semibold text-center bg-gray-100 rounded overflow-x-auto">
                                                     {calculations.items[index]?.amount || '-'}
                                                 </div>
                                                 <button
@@ -1039,129 +1031,6 @@
                                     </button>
                                 </div>
 
-                                {/* Preview Section */}
-                                <div className="bg-white border border-gray-300 rounded-lg p-6">
-                                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Invoice Preview</h2>
-                                    <div className="invoice-preview text-xs border border-gray-400 p-4 bg-white">
-                                        {/* Header */}
-                                        <div className="text-center border border-black p-2 mb-1">
-                                            <div className="font-bold text-lg">TAX INVOICE</div>
-                                        </div>
-
-                                        <div className="text-center border border-black p-2 mb-1">
-                                            <div className="font-bold text-base">{formData.companyName}</div>
-                                        </div>
-
-                                        {/* Company Details */}
-                                        <div className="mb-2 text-xs">
-                                            <div>Address : {formData.address}</div>
-                                            <div>Mobile No: {formData.mobile} ; e-mail: {formData.email}</div>
-                                            <div>Our GSTN : {formData.gstn}</div>
-                                            <div>Place of Service : {formData.placeOfService}</div>
-                                            <div>State Code : {formData.stateCode}</div>
-                                        </div>
-
-                                        {/* Invoice and Customer Details */}
-                                        <div className="grid grid-cols-12 border border-black text-xs">
-                                            <div className="col-span-8 border-r border-black p-2">
-                                                <div className="font-bold">Details of Receiver (Billed to)</div>
-                                                <div className="mt-2">
-                                                    <div>{formData.receiverName}</div>
-                                                    <div>{formData.receiverAddress}</div>
-                                                    <div>{formData.receiverCity}</div>
-                                                    <div>{formData.receiverState}</div>
-                                                    <div>Customers GST No. {formData.customerGST}</div>
-                                                </div>
-                                            </div>
-                                            <div className="col-span-4">
-                                                <div className="grid grid-cols-2 h-full">
-                                                    <div className="border-r border-black p-2">
-                                                        <div className="font-bold">Invoice No :</div>
-                                                        <div>{formData.invoiceNo}</div>
-                                                        <div className="font-bold mt-4">State Code</div>
-                                                        <div>{formData.stateCode}</div>
-                                                    </div>
-                                                    <div className="p-2">
-                                                        <div className="font-bold">Date :</div>
-                                                        <div>{formData.date}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Items Table */}
-                                        <div className="border border-black mt-2">
-                                            <div className="grid grid-cols-12 border-b border-black bg-gray-100 p-1 font-bold text-xs">
-                                                <div className="col-span-1 border-r border-black text-center">S.No</div>
-                                                <div className="col-span-5 border-r border-black text-center">Description of Service</div>
-                                                <div className="col-span-2 border-r border-black text-center">SAC Code</div>
-                                                <div className="col-span-1 border-r border-black text-center">Qty M.tons</div>
-                                                <div className="col-span-1 border-r border-black text-center">Price per M.ton ₹</div>
-                                                <div className="col-span-2 text-center">Amount ₹</div>
-                                            </div>
-                                            {calculations.items.map((item, index) => (
-                                                <div key={index} className="grid grid-cols-12 border-b border-black p-1 text-xs">
-                                                    <div className="col-span-1 border-r border-black text-center">{index + 1}</div>
-                                                    <div className="col-span-5 border-r border-black px-1">{item.description}</div>
-                                                    <div className="col-span-2 border-r border-black text-center">{item.sacCode}</div>
-                                                    <div className="col-span-1 border-r border-black text-center">{item.qty}</div>
-                                                    <div className="col-span-1 border-r border-black text-center">{item.rate}</div>
-                                                    <div className="col-span-2 text-right px-1">{item.amount}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* Tax Summary */}
-                                        <div className="grid grid-cols-12 border border-black mt-2">
-                                            <div className="col-span-8 border-r border-black p-2">
-                                                <div className="font-bold">Our Bank Details:</div>
-                                                <div>Name : {formData.bankName}</div>
-                                                <div>A/c.No. {formData.accountNo}</div>
-                                                <div>Bank Name: {formData.bankBranch}</div>
-                                                <div>IFSC Code: {formData.ifscCode}</div>
-                                            </div>
-                                            <div className="col-span-4">
-                                                <div className="space-y-1 text-xs p-2">
-                                                    <div className="grid grid-cols-3 border-b pb-1">
-                                                        <div className="col-span-2 font-bold">Total Amount before Tax</div>
-                                                        <div className="text-right">{calculations.totalBeforeTax}</div>
-                                                    </div>
-                                                    <div className="grid grid-cols-3 border-b pb-1">
-                                                        <div>Add : IGST @</div>
-                                                        <div className="text-center">18%</div>
-                                                        <div className="text-right">{calculations.igst}</div>
-                                                    </div>
-                                                    <div className="grid grid-cols-3 border-b pb-1">
-                                                        <div className="col-span-2 font-bold">Total Amount after Tax:</div>
-                                                        <div className="text-right">{calculations.totalAfterTax}</div>
-                                                    </div>
-                                                    <div className="grid grid-cols-3 border-t pt-1">
-                                                        <div className="col-span-2 font-bold">Net Amount Payable</div>
-                                                        <div className="text-right">{calculations.netAmount}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Amount in Words */}
-                                        <div className="text-xs mt-2 p-2 border border-black">
-                                            <div>Rupees : {calculations.amountInWords}</div>
-                                        </div>
-
-                                        {/* Declaration and Signature */}
-                                        <div className="grid grid-cols-12 border border-black mt-4">
-                                            <div className="col-span-8 border-r border-black p-2">
-                                                <div className="font-bold">Subject to Hyderabad Jurisdiction Only</div>
-                                                <div className="font-bold mt-2">Declaration:</div>
-                                                <div>We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</div>
-                                            </div>
-                                            <div className="col-span-4 p-2 text-center">
-                                                <div className="font-bold italic">Authorised Signatory</div>
-                                                <div className="font-bold mt-2">For {formData.companyName}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
