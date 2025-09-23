@@ -54,11 +54,17 @@
                 stateCode: '36',
                 invoiceNo: 'SSLE-05',
                 date: '31-08-2025',
+                vehicleNumber: '',
                 receiverName: 'M/s.Sree Jayalakshmi Minerals.,',
                 receiverAddress: '8-3-315/9A,2nd Floor, Maruthinagar,',
                 receiverCity: 'Yousufguda,Hyderabad-500045,',
                 receiverState: 'Telangana,India.',
                 customerGST: '36ACHFS4911P1ZL',
+                shipToName: 'JAI RAJ ISPAT LIMITED',
+                shipToAddress: 'Orvakal Mega industrial Hub',
+                shipToCity: 'Gttapadu Village,',
+                shipToState: 'Orvakal Mandal, Kurnool',
+                shipToGST: '37AAACJ6859P3ZO',
                 bankName: 'SRI SAI LAKSHMI ENTERPRISES',
                 accountNo: '50200054088341',
                 bankBranch: 'HDFC Bank , Branch Name: Shadnagar',
@@ -307,33 +313,51 @@
                 doc.text(`Place of Service : ${formData.placeOfService}`, 25, 66);
                 doc.text(`State Code : ${formData.stateCode}`, 25, 73);
 
-                // Invoice Details Header
-                doc.rect(20, 80, 130, 8);
+                // Invoice Details Header with Billed To and Ship To
+                doc.rect(20, 80, 65, 8);
+                doc.rect(85, 80, 65, 8);
                 doc.rect(150, 80, 20, 8);
                 doc.rect(170, 80, 20, 8);
                 doc.setFont('helvetica', 'bold');
-                doc.text('Details of Receiver (Billed to)', 25, 86);
+                doc.text('Details of Receiver (Billed to)', 52.5, 86, { align: 'center' });
+                doc.text('Ship to Details', 117.5, 86, { align: 'center' });
                 doc.text('Invoice No :', 155, 86);
                 doc.text('Date :', 175, 86);
 
                 // Invoice Details Values
-                doc.rect(20, 88, 130, 8);
+                doc.rect(20, 88, 65, 8);
+                doc.rect(85, 88, 65, 8);
                 doc.rect(150, 88, 20, 8);
                 doc.rect(170, 88, 20, 8);
                 doc.setFont('helvetica', 'normal');
                 doc.text(formData.invoiceNo, 155, 94);
-                doc.text(formData.date, 175, 94);
+                doc.text(formData.date, 175, 92);
+                if (formData.vehicleNumber) {
+                    doc.setFontSize(8);
+                    doc.text(`Vehicle: ${formData.vehicleNumber}`, 175, 96);
+                    doc.setFontSize(9);
+                }
 
-                // Receiver Details
+                // Receiver Details (Billed To) and Ship To Details
                 let yPos = 100;
+                doc.rect(20, 96, 65, 32);
+                doc.rect(85, 96, 65, 32);
+                doc.rect(150, 96, 40, 32);
+
+                // Billed To Details
                 doc.text(formData.receiverName, 25, yPos);
                 doc.text(formData.receiverAddress, 25, yPos + 7);
                 doc.text(formData.receiverCity, 25, yPos + 14);
                 doc.text(formData.receiverState, 25, yPos + 21);
-                doc.text(`Customers GST No. ${formData.customerGST}`, 25, yPos + 28);
+                doc.text(`GST: ${formData.customerGST}`, 25, yPos + 28);
 
-                doc.rect(20, 96, 130, 32);
-                doc.rect(150, 96, 40, 32);
+                // Ship To Details
+                doc.text(formData.shipToName, 90, yPos);
+                doc.text(formData.shipToAddress, 90, yPos + 7);
+                doc.text(formData.shipToCity, 90, yPos + 14);
+                doc.text(formData.shipToState, 90, yPos + 21);
+                doc.text(`GST: ${formData.shipToGST}`, 90, yPos + 28);
+
                 doc.setFont('helvetica', 'bold');
                 doc.text('State Code', 155, yPos + 10);
                 doc.text(formData.stateCode, 165, yPos + 18);
@@ -482,33 +506,51 @@
                 doc.text(`Place of Service : ${formData.placeOfService}`, 25, 66);
                 doc.text(`State Code : ${formData.stateCode}`, 25, 73);
 
-                // Invoice Details Header
-                doc.rect(20, 80, 130, 8);
+                // Invoice Details Header with Billed To and Ship To
+                doc.rect(20, 80, 65, 8);
+                doc.rect(85, 80, 65, 8);
                 doc.rect(150, 80, 20, 8);
                 doc.rect(170, 80, 20, 8);
                 doc.setFont('helvetica', 'bold');
-                doc.text('Details of Receiver (Billed to)', 25, 86);
+                doc.text('Details of Receiver (Billed to)', 52.5, 86, { align: 'center' });
+                doc.text('Ship to Details', 117.5, 86, { align: 'center' });
                 doc.text('Invoice No :', 155, 86);
                 doc.text('Date :', 175, 86);
 
                 // Invoice Details Values
-                doc.rect(20, 88, 130, 8);
+                doc.rect(20, 88, 65, 8);
+                doc.rect(85, 88, 65, 8);
                 doc.rect(150, 88, 20, 8);
                 doc.rect(170, 88, 20, 8);
                 doc.setFont('helvetica', 'normal');
                 doc.text(formData.invoiceNo, 155, 94);
-                doc.text(formData.date, 175, 94);
+                doc.text(formData.date, 175, 92);
+                if (formData.vehicleNumber) {
+                    doc.setFontSize(8);
+                    doc.text(`Vehicle: ${formData.vehicleNumber}`, 175, 96);
+                    doc.setFontSize(9);
+                }
 
-                // Receiver Details
+                // Receiver Details (Billed To) and Ship To Details
                 let yPos = 100;
+                doc.rect(20, 96, 65, 32);
+                doc.rect(85, 96, 65, 32);
+                doc.rect(150, 96, 40, 32);
+
+                // Billed To Details
                 doc.text(formData.receiverName, 25, yPos);
                 doc.text(formData.receiverAddress, 25, yPos + 7);
                 doc.text(formData.receiverCity, 25, yPos + 14);
                 doc.text(formData.receiverState, 25, yPos + 21);
-                doc.text(`Customers GST No. ${formData.customerGST}`, 25, yPos + 28);
+                doc.text(`GST: ${formData.customerGST}`, 25, yPos + 28);
 
-                doc.rect(20, 96, 130, 32);
-                doc.rect(150, 96, 40, 32);
+                // Ship To Details
+                doc.text(formData.shipToName, 90, yPos);
+                doc.text(formData.shipToAddress, 90, yPos + 7);
+                doc.text(formData.shipToCity, 90, yPos + 14);
+                doc.text(formData.shipToState, 90, yPos + 21);
+                doc.text(`GST: ${formData.shipToGST}`, 90, yPos + 28);
+
                 doc.setFont('helvetica', 'bold');
                 doc.text('State Code', 155, yPos + 10);
                 doc.text(formData.stateCode, 165, yPos + 18);
@@ -675,14 +717,24 @@
 
                                         {/* Invoice and Customer Details */}
                                         <div className="grid grid-cols-12 border border-black text-xs">
-                                            <div className="col-span-8 border-r border-black p-2">
+                                            <div className="col-span-4 border-r border-black p-2">
                                                 <div className="font-bold">Details of Receiver (Billed to)</div>
                                                 <div className="mt-2">
                                                     <div>{formData.receiverName}</div>
                                                     <div>{formData.receiverAddress}</div>
                                                     <div>{formData.receiverCity}</div>
                                                     <div>{formData.receiverState}</div>
-                                                    <div>Customers GST No. {formData.customerGST}</div>
+                                                    <div>GST: {formData.customerGST}</div>
+                                                </div>
+                                            </div>
+                                            <div className="col-span-4 border-r border-black p-2">
+                                                <div className="font-bold">Ship to Details</div>
+                                                <div className="mt-2">
+                                                    <div>{formData.shipToName}</div>
+                                                    <div>{formData.shipToAddress}</div>
+                                                    <div>{formData.shipToCity}</div>
+                                                    <div>{formData.shipToState}</div>
+                                                    <div>GST: {formData.shipToGST}</div>
                                                 </div>
                                             </div>
                                             <div className="col-span-4">
@@ -696,6 +748,11 @@
                                                     <div className="p-2">
                                                         <div className="font-bold">Date :</div>
                                                         <div>{formData.date}</div>
+                                                        {formData.vehicleNumber && (
+                                                            <div className="mt-2">
+                                                                <div className="text-xs">Vehicle: {formData.vehicleNumber}</div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
@@ -849,7 +906,7 @@
 
                                     <div className="bg-green-50 p-4 rounded-lg">
                                         <h2 className="text-xl font-semibold text-green-900 mb-4">Invoice Details</h2>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-2 gap-4 mb-4">
                                             <input
                                                 type="text"
                                                 name="invoiceNo"
@@ -867,10 +924,18 @@
                                                 className="w-full p-3 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                                             />
                                         </div>
+                                        <input
+                                            type="text"
+                                            name="vehicleNumber"
+                                            placeholder="Vehicle Number"
+                                            value={formData.vehicleNumber}
+                                            onChange={handleInputChange}
+                                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                                        />
                                     </div>
 
                                     <div className="bg-purple-50 p-4 rounded-lg">
-                                        <h2 className="text-xl font-semibold text-purple-900 mb-4">Customer Details</h2>
+                                        <h2 className="text-xl font-semibold text-purple-900 mb-4">Customer Details (Billed To)</h2>
                                         <div className="space-y-4">
                                             <input
                                                 type="text"
@@ -898,11 +963,65 @@
                                             />
                                             <input
                                                 type="text"
+                                                name="receiverState"
+                                                placeholder="State"
+                                                value={formData.receiverState}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                                            />
+                                            <input
+                                                type="text"
                                                 name="customerGST"
                                                 placeholder="Customer GST"
                                                 value={formData.customerGST}
                                                 onChange={handleInputChange}
                                                 className="w-full p-3 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-indigo-50 p-4 rounded-lg">
+                                        <h2 className="text-xl font-semibold text-indigo-900 mb-4">Ship To Details</h2>
+                                        <div className="space-y-4">
+                                            <input
+                                                type="text"
+                                                name="shipToName"
+                                                placeholder="Ship To Company Name"
+                                                value={formData.shipToName}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="shipToAddress"
+                                                placeholder="Ship To Address Line 1"
+                                                value={formData.shipToAddress}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="shipToCity"
+                                                placeholder="Ship To City"
+                                                value={formData.shipToCity}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="shipToState"
+                                                placeholder="Ship To State"
+                                                value={formData.shipToState}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="shipToGST"
+                                                placeholder="Ship To GST"
+                                                value={formData.shipToGST}
+                                                onChange={handleInputChange}
+                                                className="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                                             />
                                         </div>
                                     </div>
